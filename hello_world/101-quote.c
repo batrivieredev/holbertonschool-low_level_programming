@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <unistd.h>
 
 /**
  * main - Entry point
@@ -8,6 +9,7 @@
 
 int main(void)
 {
-	puts("\"Programming is like building a multilingual puzzle");
-	return (0);
+	write(STDOUT_FILENO, "and that piece of art is useful", 31);
+	write(STDOUT_FILENO, "\" - Dora Korpar, 2015-10-19\n", 28);
+	return (1);
 }
