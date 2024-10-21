@@ -7,16 +7,16 @@
  */
 int main(void)
 {
-	long int n = 1, nminus1 = 0, count, tmp, sum = 0;
+	unsigned long int n = 1, nminus1 = 0, count, tmp;
 
-	for (count = 0; count < 50; count++)
+	for (count = 0; count <= 98; count++)
 	{
 		tmp = n + nminus1;
 		nminus1 = n;
 		n = tmp;
-		if (n % 2 == 0 && n <= 4000000)
-			sum = sum + n;
+		if (count != 98)
+			printf("%ld, ", n);
 	}
-	printf("%ld\n", sum);
+	printf("\n");
 	return (0);
 }
