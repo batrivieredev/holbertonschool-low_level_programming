@@ -1,31 +1,26 @@
-#include "main.h"
-#include <stdio.h>
+/*
+ * File: 101-print_number.c
+ * Auth: Brennan D Baraban
+ */
+
+#include "holberton.h"
+
 /**
- * print_number - check the code
- * @n: number to print
- *
- * Return: NOTHING
+ * print_number - Prints an integer.
+ * @n: The integer to be printed.
  */
 void print_number(int n)
 {
-	int power10 = 1, print = 0;
+	unsigned int num = n;
 
 	if (n < 0)
 	{
 		_putchar('-');
+		num = -num;
 	}
 
-	for (power10 = 1000000000; power10 >= 1; power10 = power10 / 10)
-	{
-		if (n / power10 % 10 != 0 || print == 1 || power10 == 1)
-		{
-			if (n / power10 % 10 < 0)
-				_putchar('0' - (n / power10 % 10));
-			else
-				_putchar('0' + n / power10 % 10);
+	if ((num / 10) > 0)
+		print_number(num / 10);
 
-			print = 1;
-		}
-	}
-
+	_putchar((num % 10) + '0');
 }
