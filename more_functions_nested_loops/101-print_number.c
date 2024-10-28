@@ -1,26 +1,45 @@
-/*
- * File: 101-print_number.c
- * Auth: Brennan D Baraban
- */
-
 #include "holberton.h"
 
 /**
- * print_number - Prints an integer.
- * @n: The integer to be printed.
+ * print_number - function to print integers
+ *
+ * @n: int type
+ *
+ *  Return: void
  */
+
 void print_number(int n)
 {
-	unsigned int num = n;
+	int a, remainder, length, count;
+	int m = n;
+	int pcounter = 0;
+	int power;
 
+	if (n == 0)
+	{
+		_putchar('0');
+	}
 	if (n < 0)
 	{
 		_putchar('-');
-		num = -num;
 	}
-
-	if ((num / 10) > 0)
-		print_number(num / 10);
-
-	_putchar((num % 10) + '0');
+	for (length = 0; n != 0; length++)
+	{
+		n /= 10;
+	}
+	for (power = 1; pcounter < (length - 1); pcounter++)
+	{
+		power *= 10;
+	}
+	for (count = 0; count < length; count++)
+	{
+		a = m;
+		if (m < 0)
+			_putchar(((m / power) * -1) + '0');
+		else
+			_putchar((m / power) + '0');
+		remainder = a % power;
+		power /= 10;
+		m = remainder;
+	}
 }
