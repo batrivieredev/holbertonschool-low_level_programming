@@ -4,7 +4,7 @@
  * _atoi - check the code
  * @s: string start
  *
- * Return: first nuber in string with sign
+ * Return: first number in string with sign
  */
 int _atoi(char *s)
 {
