@@ -1,19 +1,37 @@
 #include "main.h"
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <stddef.h>
+#include <ctype.h>
 
 /**
- * _strcmp - check the code
- * @s1: first string
- * @s2: second string
- *
- * Return: difference between strings
+ *_strspn - gets the length of a prefix substring
+ *@s: char string to be tested
+ *@accept: char string to be tested
+ * Return: 0
  */
-int _strcmp(char *s1, char *s2)
+unsigned int _strspn(char *s, char *accept)
 {
-	int i;
+	unsigned int length = 0; /*Variable to calculate the length*/
+	unsigned int i, j; /*To navigate through 's' and 'accept' strings*/
 
-	for (i = 0; s1[i] == s2[i] && s1[i] != '\0' && s2[i] != '\0'; )
-		i++;
+	for (i = 0; s[i] != '\0'; i++)
+	{
+		for (j = 0; accept[j] != '\0'; j++)
+		{
+			if (s[i] == accept[j])
+			{
+				length++;
+				break; /* Exit the inner loop if a match is found */
+			}
+		}
+		if (accept[j] == '\0')
+		{
+			return (length); /* Return the calculated length if s[i] is not in accept */
+		}
+	}
 
-
-	return (s1[i] - s2[i]);
+	return (length); /* Return the calculated length at the end */
 }
