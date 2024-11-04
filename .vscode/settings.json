@@ -1,0 +1,54 @@
+{
+    "[python]": {
+        "editor.rulers": [
+            79
+        ],
+        "editor.insertSpaces": true,
+        "editor.tabSize": 4
+    },
+    "[javascript]": {
+        "editor.rulers": [
+            79
+        ],
+        "editor.insertSpaces": true,
+        "editor.tabSize": 2
+    },
+    "[c]": {
+        "editor.rulers": [
+            80
+        ],
+        "editor.insertSpaces": false,
+        "editor.wordBasedSuggestions": "off",
+        "editor.suggest.insertMode": "replace",
+        "editor.semanticHighlighting.enabled": true,
+        "files.trimTrailingWhitespace": true
+    },
+    "workbench.colorTheme": "Monokai",
+    "editor.insertSpaces": false,
+    "editor.renderWhitespace": "boundary",
+    "workbench.colorCustomizations": {
+        "editorWhitespace.foreground": "#cecdcd69"
+    },
+    "files.insertFinalNewline": true,
+    "C/C++ Include Guard.Macro Type": "Filename",
+    "C/C++ Include Guard.Remove Extension": false,
+    "files.trimTrailingWhitespace": true,
+    "explorer.confirmDragAndDrop": false,
+    "explorer.confirmDelete": false,
+    "workbench.startupEditor": "none",
+    "files.autoSave": "afterDelay",
+    "git.openRepositoryInParentFolders": "always",
+    "git.enableSmartCommit": true,
+    "git.autofetch": true,
+    "git.confirmSync": false,
+    "terminal.integrated.shell.linux": "/bin/bash",
+    "terminal.integrated.sendKeybindingsToShell": true,
+    "remote.WSL.downloadInBackground": false,
+    "hediet.vscode-drawio.resizeImages": null,
+    "remote.autoForwardPortsSource": "hybrid",
+    "cmake.configureOnOpen": true,
+    "liveServer.settings.donotVerifyTags": true,
+    "liveServer.settings.donotShowInfoMsg": true,
+    "workbench.iconTheme": "file-icons",
+    "terminal.explorerKind": "external"
+}
