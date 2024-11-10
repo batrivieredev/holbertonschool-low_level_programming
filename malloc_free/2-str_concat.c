@@ -1,38 +1,39 @@
 #include "main.h"
-#include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 
 /**
- *str_concat - concatenates two strings
- * @s1: string 1
- * @s2: string 2
- * Return: Always 0.
+ * *str_concat - check the code.
+ *
+ * Concatenate two strings
+ *
+ * @s1: string to cat
+ * @s2: string to cat
+ * Return: Pointer to string or null if faillure
  */
 char *str_concat(char *s1, char *s2)
 {
-	size_t i, j;
-	/*Ternary to initiate s1 & s2 to 0 if they're not NULL*/
-	size_t size1 = (s1 != NULL) ? strlen(s1) : 0;
-	size_t size2 = (s2 != NULL) ? strlen(s2) : 0;
-	size_t totalSize = size1 + size2;
+	char *newstr;
+	int size1 = 0, size2 = 0;
 
-	char *result = malloc(totalSize + 1);
+	if (s1 != 0)
+		for (; s1[size1] != '\0';)
+			size1++;
 
-	if (result == NULL)
-		return (NULL);
+	if (s2 != 0)
+		for (; s2[size2] != '\0';)
+			size2++;
 
-	for (i = 0; i < size1; i++) /*Copying s1 to result*/
-	{
-		result[i] = s1[i];
-	}
+	newstr = malloc(size1 + size2 + 1);
+	if (newstr == NULL)
+		return (0);
 
-	for (j = 0; j < size2; j++) /*Copying s2 to result*/
-	{
-		result[i + j] = s2[j];
-	}
+	if (size2 != 0)
+		for (; size2 >= 0; size2--)
+			newstr[size1 + size2] = s2[size2];
 
-	result[totalSize] = '\0'; /*Adding NULL character*/
+	if (size1 != 0)
+		for (size1--; size1 >= 0; size1--)
+			newstr[size1] = s1[size1];
 
-	return (result);
+	return (newstr);
 }
