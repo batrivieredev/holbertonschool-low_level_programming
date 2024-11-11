@@ -1,156 +1,128 @@
 #include "main.h"
-#include <limits.h>
-/**
- * str_len - finds string length
- * @str: input pointer to string
- * Return: length of string
- */
-int str_len(char *str)
-{
-	int len;
 
-	for (len = 0; *str != '\0'; len++)
-		len++, str++;
-	return (len / 2);
-}
 /**
- * _calloc - allocates memory for an array using malloc
- * @bytes: bytes of memory needed per size requested
- * @size: size in bytes of each element
- * Return: pointer to the allocated memory
- */
-void *_calloc(unsigned int bytes, unsigned int size)
-{
-	unsigned int i;
-	char *p;
-
-	if (bytes == 0 || size == 0)
-		return (NULL);
-	if (size >= UINT_MAX / bytes || bytes >= UINT_MAX / size)
-		return (NULL);
-	p = malloc(size * bytes);
-	if (p == NULL)
-		return (NULL);
-	for (i = 0; i < bytes * size; i++)
-		p[i] = 0;
-	return ((void *)p);
-}
-/**
- * add_arrays - adds 2 arrays of ints
- * @mul_result: pointer to array with numbers from product
- * @sum_result: pointer to array with numbers from total sum
- * @len_r: length of both arrays
- * Return: void
- */
-void add_arrays(int *mul_result, int *sum_result, int len_r)
-{
-	int i = 0, len_r2 = len_r - 1, carry = 0, sum;
-
-	while (i < len_r)
-	{
-		sum = carry + mul_result[len_r2] + sum_result[len_r2];
-		sum_result[len_r2] = sum % 10;
-		carry = sum / 10;
-		i++;
-		len_r2--;
-	}
-}
-/**
- * is_digit - checks for digits
- * @c: input character to check for digit
- * Return: 0 failure, 1 success
- */
-int is_digit(char c)
-{
-	if (c >= '0' && c <= '9')
-		return (1);
-	printf("Error\n");
-	return (0);
-}
-/**
- * multiply - multiplies 2 #'s, prints result, must be 2 #'s
- * @num1: factor # 1 (is the smaller of 2 numbers)
- * @len_1: length of factor 1
- * @num2: factor # 2 (is the larger of 2 numbers)
- * @len_2: length of factor 2
- * @len_r: length of result arrays
- * Return: 0 fail, 1 success
- */
-int *multiply(char *num1, int len_1, char *num2, int len_2, int len_r)
-{
-	int i = 0, i1 = len_1 - 1;
-	int i2, product, carry, digit, *mul_result, *sum_result;
-
-	sum_result = _calloc(sizeof(int), (len_r));
-	while (i < len_1)
-	{
-		mul_result = _calloc(sizeof(int), len_r);
-		i2 = len_2 - 1, digit = (len_r - 1 - i);
-		if (!is_digit(num1[i1]))
-			return (NULL);
-		carry = 0;
-		while (i2 >= 0)
-		{
-			if (!is_digit(num2[i2]))
-				return (NULL);
-			product = (num1[i1] - '0') * (num2[i2] - '0');
-			product += carry;
-			mul_result[digit] += product % 10;
-			carry = product / 10;
-			digit--, i2--;
-		}
-		add_arrays(mul_result, sum_result, len_r);
-		free(mul_result);
-	    i++, i1--;
-	}
-	return (sum_result);
-}
-/**
- * print_me - prints my array of the hopeful product here
- * @sum_result: pointer to int array with numbers to add
- * @len_r: length of result array
- * Return: void
- */
-void print_me(int *sum_result, int len_r)
-{
-	int i = 0;
-
-	while (sum_result[i] == 0 && i < len_r)
-		i++;
-	if (i == len_r)
-		_putchar('0');
-	while (i < len_r)
-		_putchar(sum_result[i++] + '0');
-	_putchar('\n');
-}
-/**
- * main - multiply 2 input #'s of large lengths and print result or print Error
- * @argc: input count of args
- * @argv: input array of string args
- * Return: 0, Success
+ * main - Program that mulplies two positive numbers
+ * @argc: Number of argumenets
+ * @argv: Muldimensional array of arguments
+ * Return: Always 0 (Success)
  */
 int main(int argc, char **argv)
 {
-	int len_1, len_2, len_r, temp, *sum_result;
-	char *num1, *num2;
+	char b[15000];
+	char *n = b;
+	int i, j;
 
 	if (argc != 3)
 	{
 		printf("Error\n");
 		exit(98);
 	}
-	len_1 = str_len(argv[1]), len_2 = str_len(argv[2]);
-	len_r = len_1 + len_2;
-	if (len_1 < len_2)
-		num1 = argv[1], num2 = argv[2];
-	else
+	if (argv[1][0] == '0' || argv[2][0] == '0')
 	{
-		num1 = argv[2], num2 = argv[1];
-		temp = len_2, len_2 = len_1, len_1 = temp;
+		putchar('0');
+		putchar(10);
+		return (0);
 	}
-	sum_result = multiply(num1, len_1, num2, len_2, len_r);
-	if (sum_result == NULL)
-		exit(98);
-	print_me(sum_result, len_r);
+
+	n = big_mult(argv[1], argv[2]);
+
+	for (i = 0, j = 0;; i++)
+	{
+		if (n[i] != '0')
+			j = 1;
+		if (j == 1 && n[i] == '\0')
+			break;
+		if (j == 1)
+			putchar(n[i]);
+	}
+	putchar(10);
+
 	return (0);
+}
+
+/**
+ * _calloc - Function that allocates memory for an array
+ * @nmemb: Elements of array
+ * @size: Size of data type
+ * Return: Void
+ */
+void *_calloc(unsigned int nmemb, unsigned int size)
+{
+	unsigned int i;
+	char *p;
+
+	if (nmemb == 0 || size == 0)
+		return (NULL);
+
+	p = malloc(nmemb * size);
+
+	if (p == NULL)
+		return (NULL);
+
+	for (i = 0; i < nmemb * size; i++)
+		p[i] = 0;
+
+	return (p);
+}
+
+/**
+ * _strlen - Function that calculates the length of a string
+ * @s: String to be checked
+ * Return: The lengtht of string or -1 if it fails
+ */
+int _strlen(char *s)
+{
+	int i;
+
+	if (s == NULL)
+		return (-1);
+
+	for (i = 0; s[i]; i++)
+		;
+
+	return (i);
+}
+
+/**
+ * big_mult - Function that multiplies two big numbers
+ * @s1: String big number 1
+ * @s2: String big number 2
+ * Return: a result of the two big numbers
+ */
+char *big_mult(char *s1, char *s2)
+{
+	int i, j, k, l, value;
+	char *n;
+
+	i = _strlen(s1);
+	j = _strlen(s2);
+	k = i + j + 1;
+	n = _calloc(k, sizeof(char));
+	if (n == NULL)
+		printf("Error\n"), exit(98);
+	n[k - 1] = '\0';
+
+	for (--i; i >= 0; i--)
+	{
+		if (s1[i] < '0' || s1[i] > '9')
+			free(n), printf("Error\n"), exit(98);
+		for (l = j - 1; l >= 0; l--)
+		{
+			if (s2[l] < '0' || s2[l] > '9')
+				free(n), printf("Error\n"), exit(98);
+			value = (s1[i] - '0') * (s2[l] - '0');
+			n[i + l + 1] += value;
+			if (n[i + l + 1] > 9)
+			{
+				value = n[i + l + 1];
+				n[i + l + 1] %= 10;
+				n[i + l] += value / 10;
+			}
+		}
+	}
+
+	for (i = 0; i < k - 1; i++)
+		n[i] += '0';
+
+	return (n);
 }
