@@ -1,149 +1,78 @@
-#include "main.h"
-/* malloc free */
+#include <stdio.h>
 #include <stdlib.h>
+#include <ctype.h>
 
+int is_positive_integer(char *str);
+void print_error_and_exit(const char *message, int status);
+int multiply_numbers(int num1, int num2);
 
 /**
- * initDigitArray - allocates and sets to 0 an array to contain the digits
- *   of a base 10 number
+ * main - Entry point of the program
+ * @argc: Argument count
+ * @argv: Argument vector
  *
- * @size: array size
- * Return: pointer to initialized array, or NULL on failure
+ * Return: Always 0 (Success)
  */
-unsigned int *initDigitArray(size_t size)
+int main(int argc, char *argv[])
 {
-	unsigned int *arr = NULL;
-	size_t i;
+	int num1, num2, result;
 
-	arr = malloc(sizeof(unsigned int) * size);
-	if (!arr)
-		return (NULL);
+	if (argc != 3)
+	{
+		print_error_and_exit("Error\n", 98);
+	}
 
-	for (i = 0; i < size; i++)
-		arr[i] = 0;
+	if (!is_positive_integer(argv[1]) || !is_positive_integer(argv[2]))
+	{
+		print_error_and_exit("Error\n", 98);
+	}
 
-	return (arr);
+	num1 = atoi(argv[1]);
+	num2 = atoi(argv[2]);
+	result = multiply_numbers(num1, num2);
+
+	printf("%d\n", result);
+	return (0);
 }
 
-
 /**
- * stringIntMultiply - TBD
+ * is_positive_integer - Checks if a string represents a positive integer
+ * @str: The string to check
  *
- * @prod_digits: array to store digits of product
- * @n1_digits: string containing multiplicand digits in ASCII
- * @n2_digits: string containing multiplier digits in ASCII
- * @n1_len: amount of digits in multiplicand
- * @n2_len: amount of digits in multiplier
+ * Return: 1 if the string is a positive integer, 0 otherwise
  */
-void stringIntMultiply(unsigned int *prod_digits, char *n1_digits,
-		       char *n2_digits, size_t n1_len, size_t n2_len)
+int is_positive_integer(char *str)
 {
-	int i, j, sum;
-	unsigned char digit1, digit2;
-
-	if (prod_digits == NULL || n1_digits == NULL || n2_digits == NULL)
-		return;
-
-	for (i = n1_len - 1; i >= 0; i--)
+	while (*str)
 	{
-		sum = 0;
-		digit1 = n1_digits[i] - '0';
-
-		for (j = n2_len - 1; j >= 0; j--)
+		if (!isdigit(*str))
 		{
-			digit2 = n2_digits[j] - '0';
-
-			sum += prod_digits[i + j + 1] + (digit1 * digit2);
-
-			prod_digits[i + j + 1] = sum % 10;
-
-			sum /= 10;
-		}
-
-		if (sum > 0)
-			prod_digits[i + j + 1] += sum;
-	}
-}
-
-
-/**
- * stringIsPosInt - validates if string represents a positive integer
- *
- * @s: string to test
- * Return: 1 if true, 0 if false
- */
-int stringIsPosInt(char *s)
-{
-	size_t i;
-
-	for (i = 0; s[i]; i++)
-	{
-		if (s[i] < '0' || s[i] > '9')
 			return (0);
+		}
+		str++;
 	}
-
 	return (1);
 }
 
-
 /**
- * error - error return
- *
- * @status: error code to exit with
+ * print_error_and_exit - Prints an error message and exits the program
+ * @message: The error message to print
+ * @status: The exit status
  */
-void error(int status)
+void print_error_and_exit(const char *message, int status)
 {
-	_putchar('E');
-	_putchar('r');
-	_putchar('r');
-	_putchar('o');
-	_putchar('r');
-	_putchar('\n');
+	printf("%s", message);
 	exit(status);
 }
 
-
 /**
- * main - entry point
+ * multiply_numbers - Multiplies two integers
+ * @num1: The first integer
+ * @num2: The second integer
  *
- * @argc: number of commmand line arguments
- * @argv: array of commmand line arguments
- * Return: 0 on success, 98 on failure
+ * Return: The product of num1 and num2
  */
-int main(int argc, char **argv)
+int multiply_numbers(int num1, int num2)
 {
-	size_t i, av1_len, av2_len, prod_len;
-	unsigned int *prod_digits = NULL;
-
-	if (argc != 3 || !stringIsPosInt(argv[1]) ||
-	    !stringIsPosInt(argv[2]))
-		error(98);
-
-	for (i = 0, av1_len = 0; argv[1][i]; i++)
-		av1_len++;
-
-	for (i = 0, av2_len = 0; argv[2][i]; i++)
-		av2_len++;
-
-	prod_len = av1_len + av2_len;
-	prod_digits = initDigitArray(prod_len);
-	if (prod_digits == NULL)
-		error(98);
-
-	stringIntMultiply(prod_digits, argv[1], argv[2], av1_len, av2_len);
-
-	/* omit leading zeroes */
-	for (i = 0; !prod_digits[i] && i < prod_len; i++)
-	{}
-
-	if (i == prod_len)
-		_putchar('0');
-
-	for (; i < prod_len; i++)
-		_putchar(prod_digits[i] + '0');
-	_putchar('\n');
-
-	free(prod_digits);
-
-	return (0);
+	return (num1 * num2);
 }
