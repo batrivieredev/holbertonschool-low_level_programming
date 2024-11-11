@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
+#include <string.h>
 
 /**
  * _isdigit - checks if a string consists of digits
@@ -30,8 +31,6 @@ int _isdigit(char *str)
  */
 int main(int argc, char *argv[])
 {
-	long num1, num2, result;
-
 	if (argc != 3)
 	{
 		printf("Error\n");
@@ -44,10 +43,23 @@ int main(int argc, char *argv[])
 		exit(98);
 	}
 
-	num1 = atol(argv[1]);
-	num2 = atol(argv[2]);
-	result = num1 * num2;
+	char command[1024];
+	snprintf(command, sizeof(command), "echo \"%s * %s\" | bc", argv[1], argv[2]);
+	FILE *fp;
+	char result[1024];
 
-	printf("%ld\n", result);
+	fp = popen(command, "r");
+	if (fp == NULL)
+	{
+		printf("Error\n");
+		exit(98);
+	}
+
+	if (fgets(result, sizeof(result), fp) != NULL)
+	{
+		printf("%s", result);
+	}
+
+	pclose(fp);
 	return (0);
 }
