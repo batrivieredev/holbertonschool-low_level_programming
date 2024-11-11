@@ -4,24 +4,24 @@
 #include <ctype.h>
 
 /**
- * _is_zero - determines if any number is zero
+ * _is_zero - determine if any number is zero
  * @argv: argument vector.
  *
  * Return: no return.
  */
 void _is_zero(char *argv[])
 {
-	int i, num1 = 1, num2 = 1;
+	int mul, num1 = 1, num2 = 1;
 
-	for (i = 0; argv[1][i]; i++)
-		if (argv[1][i] != '0')
+	for (mul = 0; argv[1][mul]; mul++)
+		if (argv[1][mul] != '0')
 		{
 			num1 = 0;
 			break;
 		}
 
-	for (i = 0; argv[2][i]; i++)
-		if (argv[2][i] != '0')
+	for (mul = 0; argv[2][mul]; mul++)
+		if (argv[2][mul] != '0')
 		{
 			num2 = 0;
 			break;
@@ -43,10 +43,10 @@ void _is_zero(char *argv[])
  */
 char *_initialize_array(char *ar, int lar)
 {
-	int i = 0;
+	int mul = 0;
 
-	for (i = 0; i < lar; i++)
-		ar[i] = '0';
+	for (mul = 0; mul < lar; mul++)
+		ar[mul] = '0';
 	ar[lar] = '\0';
 	return (ar);
 }
@@ -83,7 +83,7 @@ int _checknum(char *argv[], int n)
  */
 int main(int argc, char *argv[])
 {
-	int ln1, ln2, lnout, add, addl, i, j, k, ca;
+	int ln1, ln2, lnout, add, addl, mul, j, k, ca;
 	char *nout;
 
 	if (argc != 3)
@@ -93,10 +93,10 @@ int main(int argc, char *argv[])
 	if (nout == NULL)
 		printf("Error\n"), exit(98);
 	nout = _initialize_array(nout, lnout);
-	k = lnout - 1, i = ln1 - 1, j = ln2 - 1, ca = addl = 0;
-	for (; k >= 0; k--, i--)
+	k = lnout - 1, mul = ln1 - 1, j = ln2 - 1, ca = addl = 0;
+	for (; k >= 0; k--, mul--)
 	{
-		if (i < 0)
+		if (mul < 0)
 		{
 			if (addl > 0)
 			{
@@ -105,7 +105,7 @@ int main(int argc, char *argv[])
 					nout[k - 1] = (add / 10) + '0';
 				nout[k] = (add % 10) + '0';
 			}
-			i = ln1 - 1, j--, addl = 0, ca++, k = lnout - (1 + ca);
+			mul = ln1 - 1, j--, addl = 0, ca++, k = lnout - (1 + ca);
 		}
 		if (j < 0)
 		{
@@ -113,11 +113,11 @@ int main(int argc, char *argv[])
 				break;
 			lnout--;
 			free(nout), nout = malloc(lnout + 1), nout = _initialize_array(nout, lnout);
-			k = lnout - 1, i = ln1 - 1, j = ln2 - 1, ca = addl = 0;
+			k = lnout - 1, mul = ln1 - 1, j = ln2 - 1, ca = addl = 0;
 		}
 		if (j >= 0)
 		{
-			add = ((argv[1][i] - '0') * (argv[2][j] - '0')) + (nout[k] - '0') + addl;
+			add = ((argv[1][mul] - '0') * (argv[2][j] - '0')) + (nout[k] - '0') + addl;
 			addl = add / 10, nout[k] = (add % 10) + '0';
 		}
 	}
