@@ -4,19 +4,28 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define min(x, y) (((x) < (y)) ? (x) : (y))
-
-int _putchar(char c);
+/* 0-malloc_free */
 void *malloc_checked(unsigned int b);
-char *string_nconcat(char *s1, char *s2, unsigned int n);
-int len(char *str);
-void *_calloc(unsigned int nmemb, unsigned int size);
-int *array_range(int min, int max);
-void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size);
-int find_len(char *str);
-char *create_xarray(int size);
-char *iterate_zeroes(char *str);
-void get_prod(char *prod, char *mult, int digit, int zeroes);
-void add_nums(char *final_prod, char *next_prod, int next_len);
 
-#endif /*MAIN_H*/
+/* 1-string_nconcat */
+char *string_nconcat(char *s1, char *s2, unsigned int n);
+
+/* 2-calloc.c */
+void *_calloc(unsigned int nmemb, unsigned int size);
+
+/* 3-array_range.c */
+int *array_range(int min, int max);
+
+/*helper*/
+int _putchar(char c);
+
+/* 100-realloc.c */
+void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size);
+void *new_ptr;
+
+/*101-mul.c*/
+int is_digit(char *s);
+void error(void);
+char *multiply(char *num1, char *num2);
+
+#endif /* MAIN_H */
