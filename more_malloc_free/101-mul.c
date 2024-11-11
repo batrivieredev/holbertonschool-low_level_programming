@@ -1,167 +1,126 @@
-#include <stdio.h>
-#include <stdlib.h>
 #include "main.h"
+#include <stdlib.h>
+#include <stdio.h>
+#include <ctype.h>
 
-int _putchar(char c);
 /**
- * print_number- prints an int using _putchar
- * @m: the int to be printed
+ * _is_zero - determine if any number is zero
+ * @argv: argument vector.
+ *
+ * Return: no return.
  */
-void print_number(int m)
+void _is_zero(char *argv[])
 {
-	unsigned int n, orig, mag = 1, i = 0;
+	int mul, num1 = 1, num2 = 1;
 
-	if (m < 0)
+	for (mul = 0; argv[1][mul]; mul++)
+		if (argv[1][mul] != '0')
+		{
+			num1 = 0;
+			break;
+		}
+
+	for (mul = 0; argv[2][mul]; mul++)
+		if (argv[2][mul] != '0')
+		{
+			num2 = 0;
+			break;
+		}
+
+	if (num1 == 1 || num2 == 1)
 	{
-		orig = n = (unsigned int) -m;
-		_putchar(45);
+		printf("0\n");
+		exit(0);
 	}
-	else
-		orig = n = (unsigned int) m;
-
-	for (i = 0; (n / 10) > 0; i++)
-	{
-		n /= 10;
-		mag *= 10;
-	}
-
-	for (; i > 0; i--)
-	{
-		_putchar('0' + ((orig / mag) % 10));
-		mag /= 10;
-	}
-
-	_putchar('0' + (orig % 10));
 }
-/**
- * _strlen- returns the length of a string
- * @s: the string to measure
- * Return: the length of the string
- */
-unsigned int _strlen(char *s)
-{
-	if (!s || !*s)
-		return (0);
-	return (_strlen(s + 1) + 1);
-}
-/**
- * _pow- returns x to the power of y and -1 if y < 0
- * @x: the base
- * @y: the power
- * Return: x to the power of y
- */
-int _pow(int x, int y)
-{
-	if (y < 0)
-		return (-1);
-	else if (y == 0)
-		return (1);
-	return (x * _pow(x, y - 1));
-}
-/**
- * strtoint- converts a string into an int
- * @str: the string to take the numbers from
- * Return: int or exits with code 98 in case of bad input
- */
-int strtoint(char *str)
-{
-	unsigned long int i = 0, rv = 0, len = _strlen(str);
 
-	for (i = 0; str[i]; i++)
-	{
-		if (str[i] < '0' || str[i] > '9')
+/**
+ * _initialize_array - set memery to zero in a new array
+ * @ar: char array.
+ * @lar: length of the char array.
+ *
+ * Return: pointer of a char array.
+ */
+char *_initialize_array(char *ar, int lar)
+{
+	int mul = 0;
+
+	for (mul = 0; mul < lar; mul++)
+		ar[mul] = '0';
+	ar[lar] = '\0';
+	return (ar);
+}
+
+/**
+ * _checknum - determines length of the number
+ * and checks if number is in base 10.
+ * @argv: arguments vector.
+ * @n: row of the array.
+ *
+ * Return: length of the number.
+ */
+int _checknum(char *argv[], int n)
+{
+	int ln;
+
+	for (ln = 0; argv[n][ln]; ln++)
+		if (!isdigit(argv[n][ln]))
 		{
 			printf("Error\n");
 			exit(98);
 		}
-		rv += (str[len - 1 - i] - '0') * _pow(10, i);
-	}
 
-	return (rv);
+	return (ln);
 }
+
 /**
- * alloc_grid- creates a 2 dimensional array of ints and returns a pointer
- * @width: the width of the array
- * @height: the height of the array
- * Return: the memory position of the array
+ * main - Entry point.
+ * program that multiplies two positive numbers.
+ * @argc: number of arguments.
+ * @argv: arguments vector.
+ *
+ * Return: 0 - success.
  */
-int **alloc_grid(int width, int height)
+int main(int argc, char *argv[])
 {
-	int i = 0;
-	int **retVal = malloc(height * sizeof(int *));
+	int ln1, ln2, lnout, add, addl, mul, j, k, ca;
+	char *nout;
 
-	if (width <= 0 || height <= 0)
-		return (NULL);
-
-	if (!retVal)
-		return (NULL);
-
-	for (i = 0; i < height; i++)
+	if (argc != 3)
+		printf("Error\n"), exit(98);
+	ln1 = _checknum(argv, 1), ln2 = _checknum(argv, 2);
+	_is_zero(argv), lnout = ln1 + ln2, nout = malloc(lnout + 1);
+	if (nout == NULL)
+		printf("Error\n"), exit(98);
+	nout = _initialize_array(nout, lnout);
+	k = lnout - 1, mul = ln1 - 1, j = ln2 - 1, ca = addl = 0;
+	for (; k >= 0; k--, mul--)
 	{
-		*(retVal + i) = malloc(width * sizeof(int));
-		if (!*(retVal + i))
+		if (mul < 0)
 		{
-			for (; i >= 0; i--)
-				free(*(retVal + i));
-			free(retVal);
-			return (NULL);
+			if (addl > 0)
+			{
+				add = (nout[k] - '0') + addl;
+				if (add > 9)
+					nout[k - 1] = (add / 10) + '0';
+				nout[k] = (add % 10) + '0';
+			}
+			mul = ln1 - 1, j--, addl = 0, ca++, k = lnout - (1 + ca);
+		}
+		if (j < 0)
+		{
+			if (nout[0] != '0')
+				break;
+			lnout--;
+			free(nout), nout = malloc(lnout + 1), nout = _initialize_array(nout, lnout);
+			k = lnout - 1, mul = ln1 - 1, j = ln2 - 1, ca = addl = 0;
+		}
+		if (j >= 0)
+		{
+			add = ((argv[1][mul] - '0') * (argv[2][j] - '0')) + (nout[k] - '0') + addl;
+			addl = add / 10, nout[k] = (add % 10) + '0';
 		}
 	}
-	return (retVal);
-}
-/**
- * main- multiplies two numbers passed as arguments and prints the result
- * @argsc: the amount of arguments
- * @argsv: arguments vector
- * Return: always 0 if successful
- */
-int main(int argsc, char **argsv)
-{
-	int len1 = 0, len2 = 0, i1 = 0, i2 = 0, start = 0;
-	int gridW = 0;
-	char *num1 = NULL, *num2 = NULL;
-	int *result = NULL;
-
-	if (argsc != 3) /* if incorrect amount of arguments, exit */
-	{
-		printf("Error\n");
-		exit(98);
-	}
-
-	num1 = argsv[1];
-	num2 = argsv[2];
-	len1 = _strlen(num1);
-	len2 = _strlen(num2);
-	gridW = len1 + len2;
-	result = calloc(gridW, sizeof(int));
-
-	if (result == NULL) /* if calloc fails, exit */
-	{
-		printf("Error\n");
-		exit(98);
-	}
-
-	for (i2 = len2 - 1; i2 >= 0; i2--) /* multiplication of the two numbers */
-		for (i1 = len1 - 1; i1 >= 0; i1--)
-		{
-			int mult = (num1[i1] - '0') * (num2[i2] - '0');
-			int sum = mult + result[i1 + i2 + 1];
-
-			result[i1 + i2 + 1] = sum % 10;
-			result[i1 + i2] += sum / 10;
-		}
-
-	while (start < gridW && result[start] == 0) /* skip leading zeros */
-		start++;
-
-	if (start == gridW) /* if the result is zero */
-		_putchar('0');
-	else
-		for (i1 = start; i1 < gridW; i1++)
-			_putchar('0' + result[i1]);
-	_putchar('\n');
-
-	free(result);
-
+	printf("%s\n", nout);
 	return (0);
 }
