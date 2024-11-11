@@ -29,8 +29,7 @@ void _is_zero(char *argv[])
 
 	if (num1 == 1 || num2 == 1)
 	{
-		_putchar('0');
-		_putchar('\n');
+		printf("0\n");
 		exit(0);
 	}
 }
@@ -67,12 +66,7 @@ int _checknum(char *argv[], int n)
 	for (ln = 0; argv[n][ln]; ln++)
 		if (!isdigit(argv[n][ln]))
 		{
-			_putchar('E');
-			_putchar('r');
-			_putchar('r');
-			_putchar('o');
-			_putchar('r');
-			_putchar('\n');
+			printf("Error\n");
 			exit(98);
 		}
 
@@ -93,27 +87,11 @@ int main(int argc, char *argv[])
 	char *nout;
 
 	if (argc != 3)
-	{
-		_putchar('E');
-		_putchar('r');
-		_putchar('r');
-		_putchar('o');
-		_putchar('r');
-		_putchar('\n');
-		exit(98);
-	}
+		printf("Error\n"), exit(98);
 	ln1 = _checknum(argv, 1), ln2 = _checknum(argv, 2);
 	_is_zero(argv), lnout = ln1 + ln2, nout = malloc(lnout + 1);
 	if (nout == NULL)
-	{
-		_putchar('E');
-		_putchar('r');
-		_putchar('r');
-		_putchar('o');
-		_putchar('r');
-		_putchar('\n');
-		exit(98);
-	}
+		printf("Error\n"), exit(98);
 	nout = _initialize_array(nout, lnout);
 	k = lnout - 1, mul = ln1 - 1, j = ln2 - 1, ca = addl = 0;
 	for (; k >= 0; k--, mul--)
@@ -143,8 +121,7 @@ int main(int argc, char *argv[])
 			addl = add / 10, nout[k] = (add % 10) + '0';
 		}
 	}
-	for (k = 0; k < lnout; k++)
-		_putchar(nout[k]);
-	_putchar('\n');
+	printf("%s\n", nout);
 	return (0);
 }
+
