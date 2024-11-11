@@ -1,127 +1,150 @@
 #include "main.h"
 #include <stdlib.h>
-#include <unistd.h>
+#include <stdio.h>
+#include <ctype.h>
 
 /**
- * _isdigit - checks if character is a digit
- * @c: the character to check
+ * _is_zero - determine if any number is zero
+ * @argv: argument vector.
  *
- * Return: 1 if digit, 0 otherwise
+ * Return: no return.
  */
-int _isdigit(int c)
+void _is_zero(char *argv[])
 {
-	return (c >= '0' && c <= '9');
-}
+	int mul, num1 = 1, num2 = 1;
 
-/**
- * _strlen - returns the length of a string
- * @s: the string whose length to check
- *
- * Return: integer length of string
- */
-int _strlen(const char *s)
-{
-	int i = 0;
-
-	while (*s++)
-		i++;
-	return (i);
-}
-
-void print_error(const char *r)
-{
-	if (r)
-		free((void *)r);
-	_putchar('E');
-	_putchar('r');
-	_putchar('r');
-	_putchar('o');
-	_putchar('r');
-	_putchar('\n');
-	exit(98);
-}
-
-/**
- * big_multiply - multiply two big number strings
- * @s1: the first big number string
- * @s2: the second big number string
- *
- * Return: the product big number string
- */
-char *big_multiply(const char *s1, const char *s2)
-{
-	char *r;
-	int l1, l2, a, b, c, x;
-
-	l1 = _strlen(s1);
-	l2 = _strlen(s2);
-	x = l1 + l2;
-
-	r = (char *)calloc(x + 1, sizeof(char));
-	if (!r)
-		print_error(NULL);
-
-	/* Initialize result array with 0's */
-	for (a = 0; a < x; a++)
-		r[a] = 0;
-	r[x] = '\0';
-
-	for (l1 = l1 - 1; l1 >= 0; l1--)
-	{
-		if (!_isdigit(s1[l1]))
-			print_error(r);
-		a = s1[l1] - '0';
-		c = 0;
-
-		for (l2 = _strlen(s2) - 1; l2 >= 0; l2--)
+	for (mul = 0; argv[1][mul]; mul++)
+		if (argv[1][mul] != '0')
 		{
-			if (!_isdigit(s2[l2]))
-				print_error(r);
-			b = s2[l2] - '0';
-
-			c += r[l1 + l2 + 1] + (a * b);
-			r[l1 + l2 + 1] = c % 10;
-			c /= 10;
+			num1 = 0;
+			break;
 		}
-		if (c)
-			r[l1 + l2 + 1] += c;
-	}
 
-	return (r);
+	for (mul = 0; argv[2][mul]; mul++)
+		if (argv[2][mul] != '0')
+		{
+			num2 = 0;
+			break;
+		}
+
+	if (num1 == 1 || num2 == 1)
+	{
+		_putchar('0');
+		_putchar('\n');
+		exit(0);
+	}
 }
 
 /**
- * main - multiply two big number strings
- * @argc: the number of arguments
- * @argv: the argument vector
+ * _initialize_array - set memery to zero in a new array
+ * @ar: char array.
+ * @lar: length of the char array.
  *
- * Return: Always 0 on success.
+ * Return: pointer of a char array.
  */
-int main(int argc, char **argv)
+char *_initialize_array(char *ar, int lar)
 {
-	char *r;
-	int a, c, x;
+	int mul = 0;
+
+	for (mul = 0; mul < lar; mul++)
+		ar[mul] = '0';
+	ar[lar] = '\0';
+	return (ar);
+}
+
+/**
+ * _checknum - determines length of the number
+ * and checks if number is in base 10.
+ * @argv: arguments vector.
+ * @n: row of the array.
+ *
+ * Return: length of the number.
+ */
+int _checknum(char *argv[], int n)
+{
+	int ln;
+
+	for (ln = 0; argv[n][ln]; ln++)
+		if (!isdigit(argv[n][ln]))
+		{
+			_putchar('E');
+			_putchar('r');
+			_putchar('r');
+			_putchar('o');
+			_putchar('r');
+			_putchar('\n');
+			exit(98);
+		}
+
+	return (ln);
+}
+
+/**
+ * main - Entry point.
+ * program that multiplies two positive numbers.
+ * @argc: number of arguments.
+ * @argv: arguments vector.
+ *
+ * Return: 0 - success.
+ */
+int main(int argc, char *argv[])
+{
+	int ln1, ln2, lnout, add, addl, mul, j, k, ca;
+	char *nout;
 
 	if (argc != 3)
-		print_error(NULL);
-
-	x = _strlen(argv[1]) + _strlen(argv[2]);
-	r = big_multiply(argv[1], argv[2]);
-	c = 0;
-	a = 0;
-
-	while (c < x)
 	{
-		if (r[c])
-			a = 1;
-		if (a)
-			_putchar(r[c] + '0');
-		c++;
+		_putchar('E');
+		_putchar('r');
+		_putchar('r');
+		_putchar('o');
+		_putchar('r');
+		_putchar('\n');
+		exit(98);
 	}
-	if (!a)
-		_putchar('0');
+	ln1 = _checknum(argv, 1), ln2 = _checknum(argv, 2);
+	_is_zero(argv), lnout = ln1 + ln2, nout = malloc(lnout + 1);
+	if (nout == NULL)
+	{
+		_putchar('E');
+		_putchar('r');
+		_putchar('r');
+		_putchar('o');
+		_putchar('r');
+		_putchar('\n');
+		exit(98);
+	}
+	nout = _initialize_array(nout, lnout);
+	k = lnout - 1, mul = ln1 - 1, j = ln2 - 1, ca = addl = 0;
+	for (; k >= 0; k--, mul--)
+	{
+		if (mul < 0)
+		{
+			if (addl > 0)
+			{
+				add = (nout[k] - '0') + addl;
+				if (add > 9)
+					nout[k - 1] = (add / 10) + '0';
+				nout[k] = (add % 10) + '0';
+			}
+			mul = ln1 - 1, j--, addl = 0, ca++, k = lnout - (1 + ca);
+		}
+		if (j < 0)
+		{
+			if (nout[0] != '0')
+				break;
+			lnout--;
+			free(nout), nout = malloc(lnout + 1), nout = _initialize_array(nout, lnout);
+			k = lnout - 1, mul = ln1 - 1, j = ln2 - 1, ca = addl = 0;
+		}
+		if (j >= 0)
+		{
+			add = ((argv[1][mul] - '0') * (argv[2][j] - '0')) + (nout[k] - '0') + addl;
+			addl = add / 10, nout[k] = (add % 10) + '0';
+		}
+	}
+	for (k = 0; k < lnout; k++)
+		_putchar(nout[k]);
 	_putchar('\n');
-	free(r);
-
 	return (0);
 }
