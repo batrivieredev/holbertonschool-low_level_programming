@@ -1,47 +1,93 @@
 #include "variadic_functions.h"
+#include <stdio.h>
+#include <stdarg.h>
 
 /**
- * print_all - function that prints everything
- * @format: constant pointer to constant string
- *
- * Return: void
+ * printChar - prints a char
+ * @arg: va_list containing the char to print
  */
-void print_all(const char * const format, ...)
+void printChar(va_list arg)
 {
-	int i, flag;
-	char *str;
-	va_list argList;
+	char c;
 
-	va_start(argList, format);
-	i = 0;
-	while (format[i])
+	c = va_arg(arg, int);
+	printf("%c", c);
+}
+
+/**
+ * printInt - prints an int
+ * @arg: va_list containing the int to print
+ */
+void printInt(va_list arg)
+{
+	int i;
+
+	i = va_arg(arg, int);
+	printf("%d", i);
+}
+
+/**
+ * printFloat - prints a float
+ * @arg: va_list containing the float to print
+ */
+void printFloat(va_list arg)
+{
+	float f;
+
+	f = va_arg(arg, double);
+	printf("%f", f);
+}
+
+/**
+ * printString - prints a string
+ * @arg: va_list containing the string to print
+ */
+void printString(va_list arg)
+{
+	char *s;
+
+	s = va_arg(arg, char *);
+	if (s == NULL)
 	{
-		flag = 0;
-		switch (format[i])
+		printf("(nil)");
+		return;
+	}
+	printf("%s", s);
+}
+
+/**
+ * print_all - prints anything, based on format specifier
+ * @format: a list of types of arguments passed to the function
+ *          c: char, i: int, f: float, s: string
+ */
+void print_all(const char *const format, ...)
+{
+	va_list args;
+	int i = 0;
+	int j = 0;
+	char *comma = "";
+
+	printall_t prt[] = {
+		{"c", printChar},
+		{"i", printInt},
+		{"f", printFloat},
+		{"s", printString}};
+
+	va_start(args, format);
+	while (format && (*(format + i)))
+	{
+		j = 0;
+
+		while (j < 4 && (*(format + i) != *(prt[j].letter)))
+			j++;
+		if (j < 4)
 		{
-		case ('c'):
-			printf("%c", va_arg(argList, int));
-			flag = 1;
-			break;
-		case ('i'):
-			printf("%i", va_arg(argList, int));
-			flag = 1;
-			break;
-		case ('f'):
-			printf("%f", va_arg(argList, double));
-			flag = 1;
-			break;
-		case ('s'):
-			str = va_arg(argList, char *);
-			if (str == NULL)
-				str = "(nil)";
-			printf("%s", str);
-			flag = 1;
-			break;
+			printf("%s", comma);
+			prt[j].func(args);
+			comma = ", ";
 		}
-		if (format[i + 1] && flag)
-			printf(", ");
 		i++;
 	}
 	printf("\n");
+	va_end(args);
 }
