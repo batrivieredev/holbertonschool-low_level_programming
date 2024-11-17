@@ -1,26 +1,36 @@
-#include "variadic_functions.h"
 #include <stdarg.h>
+#include "variadic_functions.h"
 
 /**
- * sum_them_all - Returns the sum of all its paramters.
- * @n: The number of paramters passed to the function.
- * @...: A variable number of paramters to calculate the sum of.
- *
- * Return: If n == 0 - 0.
- *         Otherwise - the sum of all parameters.
- */
+* sum_them_all - Returns the sum of all its parameters.
+* @n: The number of parameters passed to the function.
+*
+* Return: The sum of all parameters. If n == 0, return 0.
+*/
 int sum_them_all(const unsigned int n, ...)
+/*const unsigned int n est le nombre d'arguments qui suivront*/
+/*... indique qu'il s'agit d'une fonction variadique,*/
+/* acceptant un nombre variable d'arguments.*/
 {
-	va_list nums;
+	va_list args;
 	unsigned int i;
-	int res = 0;
+	int sum = 0;
+/*va_list args est utilise pour acceder aux arguments variadiques.*/
+/*sum est initialise a 0 pour stocker la somme des arguments.*/
 
-	va_start(nums, n);
-
+	if (n == 0)
+		return (0);
+/*Si n est 0, il n'y a pas d'arguments a additionner, donc on retourne 0.*/
+	va_start(args, n);
+/*va_start initialise args pour acceder aux arguments apres n.*/
 	for (i = 0; i < n; i++)
-		res += va_arg(nums, int);
-	va_end(nums);
-
-	return (res);
+		sum += va_arg(args, int); /* += augmenter */
+/*La boucle itere n fois pour recuperer chaque */
+/*argument avec va_arg et l'ajouter a sum.*/
+/*va_arg(args, int) recuper l'argument suivant*/
+/* de type int de la liste args.*/
+	va_end(args);
+/*va_end termine l'utilisation de va_list.*/
+	return (sum);
+/*retourn la somme*/
 }
-
