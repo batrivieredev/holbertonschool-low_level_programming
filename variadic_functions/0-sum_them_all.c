@@ -21,11 +21,6 @@ int sum_them_all(const unsigned int n, ...)
 	{
 		int arg = va_arg(args, int);
 
-		if (arg < 0) /* If any of the arguments is negative, return -1 */
-		{
-			va_end(args);
-			return (-1); /* Return -1 to indicate an error */
-		}
 		sum += arg;
 	}
 	va_end(args);
