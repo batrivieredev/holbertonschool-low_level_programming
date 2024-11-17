@@ -110,7 +110,7 @@ int main(int argc, char *argv[])
     j = ln2 - 1;
     ca = addl = 0;
 
-    for (; k >= 0; k--, mul--)
+    for (; k >= 0; k--)
     {
         if (mul < 0)
         {
@@ -152,7 +152,8 @@ int main(int argc, char *argv[])
             nout[k] = (add % 10) + '0';
         }
     }
-    _puts(nout);
+
+    printf("%s\n", nout);
     free(nout);
     return (0);
 }
