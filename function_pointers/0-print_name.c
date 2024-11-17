@@ -1,27 +1,18 @@
 #include "function_pointers.h"
+#include <stdio.h>
 
 /**
-* print_name - prints a name using the specified function f
-* @name: name of the person
-* @f: pointer to the function to use for printing the name
-*
-* Return: Nothing.
-*/
+ * print_name - Prints a name using a function pointer.
+ * @name: The name to be printed.
+ * @f: A function pointer that takes a char pointer
+ * as a parameter and returns void.
+ *
+ * This function checks if @name and @f are not NULL,
+ * then calls @f with @name as its argument.
+ */
 void print_name(char *name, void (*f)(char *))
 {
-	if (name == NULL && f == NULL)
-	{
-		return; /*exit the function if name of function pointer is NULL*/
-	}
-
-	f(name); /*run function*/
-
+	if (name == NULL || f == NULL)
+		return;
+	f(name);
 }
-
-/*void print_name(char *name, void (*f)(char *))*/
-/*{*/
-/*	if (name != NULL)*/
-/*	{*/
-/*		f(name);  run function*/
-/*	}*/
-/*}*/
