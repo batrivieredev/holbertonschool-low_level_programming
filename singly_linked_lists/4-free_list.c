@@ -1,3 +1,5 @@
+#include "lists.h"
+#include <stdlib.h>
 
 /**
  * free_list - frees memory allocated for a list_t list
