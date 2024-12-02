@@ -1,39 +1,16 @@
+#include <stdio.h>
+#include <string.h>
 #include "main.h"
 
 /**
- * print_binary - print binary representation of a number
- * @n: unsigned long int input number to print in binary
- *
- * Return: void
+ * print_binary - prints the binary representation of a number.
+ *@n: number to be converted in binary
+ * Return: 0 SUCCESS
  */
 void print_binary(unsigned long int n)
 {
-	unsigned long i;
-	int flag = 0;
+	if (n > 1)
+		print_binary(n >> 1);
 
-	int bits = sizeof(n) * 8;
-
-	if (n == 0)
-	{
-		_putchar('0');
-		return;
-	}
-
-	while (bits > 0)
-	{
-		i = n >> bits;
-
-		if (i & 1)
-		{
-			flag = 1;
-			_putchar('1');
-		}
-		else
-		{
-			if (flag)
-				_putchar('0');
-		}
-
-		bits--;
-	}
+	_putchar((n & 1) + '0');
 }
